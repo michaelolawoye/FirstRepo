@@ -73,20 +73,5 @@ int gcd(int a, int b) {
 }
 
 
-// 1281x = 14 mod 679
-// ax = b mod n
-// ax - b = 0
-// ax - b = ny
-// ax - ny = b
-// if gcd(a, n)|b, then a integer sol. for x exists
-
-
-// a == 76, b == 10
-// a == 76 - 7(10) = 6, b == 10
-// a == 6, b == 10 - 6 = 4
-// a == 6 - 4 = 2, b == 4
-
-// 2 = 6 - 4
-//   = 6 - (10 - 6)
-//   = 2(76 - 7(10)) - 10
-//   = 2(76) - 15(10)
+// red = 3, green = 5, blue = 8
+// N = 16, n = 3
