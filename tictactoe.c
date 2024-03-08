@@ -24,10 +24,10 @@ int main(void) {
 
     int win_con = 0;
     int turn = 0;
-    int pos[ROWS][COLUMNS] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int pos[ROWS][COLUMNS] = {0};
 
 //    while (!win_con) {
-        playerMove(pos, turn+rand());
+        playerMove(pos, turn);
         displayBoard(pos);
 
 //    }
@@ -139,7 +139,7 @@ int checkWin(int positions[ROWS][COLUMNS]) {
     }
 
     for (int j = 0; j < ROWS; j++) {
-        if (winConditionCheck(positions[j], USERMOVE)) {
+        if (winConditionCheck(positions[j], USERMOVE) || winConditionCheck(columnwin[j], USERMOVE) || winConditionCheck(diagonalwin[j], USERMOVE)) {
             return 1;
         }
         else if (winConditionCheck(positions[j], COMPMOVE)) {
@@ -157,7 +157,7 @@ int checkWin(int positions[ROWS][COLUMNS]) {
 int winConditionCheck(int array[WINCON], int playerpoint) {
 
     for (int i = 0; i < WINCON-1; i++) {
-        if (!(array[i] == playerpoint) || !(array[i] == array[i+1])) {
+        if ((array[i] != playerpoint) || (array[i] != array[i+1])) {
             return 0;
         }
     }
