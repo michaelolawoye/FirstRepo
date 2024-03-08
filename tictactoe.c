@@ -124,10 +124,17 @@ void playerMove(int positions[ROWS][COLUMNS], int user) {
 int checkWin(int positions[ROWS][COLUMNS]) {
 
     int columnwin[COLUMNS][ROWS];
-    int diagonalwin;
+    int diagonalwin[COLUMNS][ROWS];
+
+    for (int i = 0; i < COLUMNS; i++) {
+        for (int j = 0; j < ROWS; j++) {
+        columnwin[i][j] = positions[j][i];
+        }
+    }
+
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
-        columnwin[i][j] = positions[j][i];
+                diagonalwin[i][j] = positions[j][j+i];
         }
     }
 
