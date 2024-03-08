@@ -27,7 +27,7 @@ int main(void) {
     int pos[ROWS][COLUMNS] = {0};
 
 //    while (!win_con) {
-        playerMove(pos, turn);
+        playerMove(pos, turn+rand());
         displayBoard(pos);
 
 //    }
