@@ -27,7 +27,7 @@ int main(void) {
     int pos[ROWS][COLUMNS] = {0};
 
 //    while (!win_con) {
-        playerMove(pos, turn+rand());
+        playerMove(pos, turn+rand()+1);
         displayBoard(pos);
 
 //    }
@@ -138,18 +138,7 @@ int checkWin(int positions[ROWS][COLUMNS]) {
         }
     }
 
-    for (int j = 0; j < ROWS; j++) {
-        if (winConditionCheck(positions[j], USERMOVE) || winConditionCheck(columnwin[j], USERMOVE) || winConditionCheck(diagonalwin[j], USERMOVE)) {
-            return 1;
-        }
-        else if (winConditionCheck(positions[j], COMPMOVE)) {
-            return 2;
-        }
-        else {
-            return 0;
-        }
-        
-    }
+
 
 }
 
