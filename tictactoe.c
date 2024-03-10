@@ -6,16 +6,14 @@
 #define ROWS 3
 #define COLUMNS 3
 #define WINCON 3
-#define USERMOVE 1
-#define COMPMOVE 2
+
 
 
 
 void displayBoard(int positions[ROWS][COLUMNS]);
-void playerMove(int positions[ROWS][COLUMNS], int user);
-int isValidMove(int positions[ROWS][COLUMNS], int move);
-int checkWin(int positions[ROWS][COLUMNS]);
-int winConditionCheck(int array[WINCON], int playercheck);
+void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o);
+void isValidMove(int positions[ROWS][COLUMNS], int move);
+
 
 
 int main(void) {
@@ -27,7 +25,6 @@ int main(void) {
     int pos[ROWS][COLUMNS] = {0};
 
 //    while (!win_con) {
-        playerMove(pos, turn+rand()+1);
         displayBoard(pos);
 
 //    }
@@ -37,7 +34,6 @@ int main(void) {
 
 
 void displayBoard(int positions[ROWS][COLUMNS]) {
-
     for (int row = 0; row < ROWS; row++) {
         for (int column = 0; column < COLUMNS; column++) {
 
@@ -65,93 +61,20 @@ void displayBoard(int positions[ROWS][COLUMNS]) {
     }
 }
 
-int isValidMove(int positions[ROWS][COLUMNS], int move) {
+void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
 
-    // 1 is minused from move because user input is 1-9, but index of board is 0-8
-    int i = (move-1) / ROWS;
-    int j = (move-1) % COLUMNS;
-
-    if (positions[i][j] != 0)
-        return 1;
-    
-    return 0;
-}
-
-void playerMove(int positions[ROWS][COLUMNS], int user) {
-
-    int user_input;
-    int used_move = 0;
-
-    if (user % 2 == 0) {
-        do {
-            printf("Enter desired position(1-%d):\n",  ROWS*COLUMNS);
-            scanf("%d", &user_input);
-
-            if (isValidMove(positions, user_input)) {
-                puts("Position already taken");
-                used_move = 1;
-            }
-            else {
-                used_move = 0;
-            }
-        } while(used_move);
-    }
-
-    else {
-        do {
-            user_input = (rand() % (ROWS*COLUMNS)) + 1;
-            if (isValidMove(positions, user_input))
-                used_move = 1;
-            else
-                used_move = 0;
-        } while (used_move);
-    }
-
+    // loops through every position in grid, checks if move is equal to the index
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLUMNS; j++) {
-            if (user_input == (ROWS*i + j + 1)) {
-                if (user % 2 == 0) {
-                    positions[i][j] = USERMOVE;
-                }
-                else {
-                    positions[i][j] = COMPMOVE;
-                }
+            if (move == i*COLUMNS + j + 1) {
+
+                // if x_or_o is even, put 1, which means 'x' and else put 2, which means 'o'
+                if (x_or_o % 2 == 0)
+                    positions[i][j] = 1;
+                else
+                    positions[i][j] = 2;
             }
         }
     }
-}
-
-int checkWin(int positions[ROWS][COLUMNS]) {
-
-    int columnwin[COLUMNS][ROWS];
-    int diagonalwin[COLUMNS][ROWS];
-
-    for (int i = 0; i < COLUMNS; i++) {
-        for (int j = 0; j < ROWS; j++) {
-        columnwin[i][j] = positions[j][i];
-        }
-    }
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
-                diagonalwin[i][j] = positions[j][j+i];
-        }
-    }
-
-
 
 }
-
-
-int winConditionCheck(int array[WINCON], int playerpoint) {
-
-    for (int i = 0; i < WINCON-1; i++) {
-        if ((array[i] != playerpoint) || (array[i] != array[i+1])) {
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
-
