@@ -10,6 +10,7 @@
 #define O 2
 
 
+void single_turn(int pos[ROWS][COLUMNS], int turn);
 void displayBoard(int positions[ROWS][COLUMNS]);
 void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o);
 int isValidMove(int positions[ROWS][COLUMNS], int move);
@@ -19,36 +20,97 @@ int main(void) {
 
     srand(time(NULL));
 
-    int used_move = 0, turn = 0, move;
+    int turn = 0;
     int pos[ROWS][COLUMNS] = {0};
 
+
+    single_turn(pos, turn);
+    
+
+    return 0;
+}
+
+void single_turn(int pos[ROWS][COLUMNS], int turn) {
+
+    int valid_move = 0;
+    int move;
+
     do {
+        displayBoard(pos);
+        puts("");
         puts("Enter a position:");
         scanf("%d", &move);
-        
-        // checks if index in grid is already used
+        system("cls");
+
+        // checks if move in grid is already used
         if (isValidMove(pos, move)) {
+            system("cls");
 
             // store move in grid using playerMove func and display grid
             playerMove(pos, move, turn);
             displayBoard(pos);
 
             // set used_move to 0 so loop terminates
-            used_move = 0;
+            valid_move = 1;
+        }
+        // makes sure move isn't out of range
+        else if (move > ROWS*COLUMNS) {
+            puts("Position entered is too large");
+            valid_move = 0;
         }
         else {
             puts("Position entered is already used");
 
             // set used_move to 1 so loop repeats
-            used_move = 1;
+            valid_move = 0;
         }
-    } while (used_move);
-
-
-    
-    return 0;
+    } while (!valid_move);
 }
 
+void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
+
+    // loops through every position in grid, checks if move is equal to the index
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+
+            // j increments symbolize moving horizontally, increasing index by one
+            // i increments by COLUMN symbolizes moving down to next row, resetting j and increasing i by number of columns counted
+            if (move == i*COLUMNS + j + 1) {
+                if (x_or_o % 2 == 0)
+                    positions[i][j] = X;
+                else
+                    positions[i][j] = O;
+            }
+        }
+    }
+
+}
+
+
+
+int isValidMove(int positions[ROWS][COLUMNS], int move) {
+
+    if (move > ROWS*COLUMNS)
+        return 0;
+    // nested loop to find move index match
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+
+            // same algo as playerMove func tp check if move is equal to index in grid
+            if (move == i*COLUMNS + j + 1) {
+
+                // 0 signifies empty position, so if not 0, position used
+                if (positions[i][j] != 0)
+                    return 0;
+
+                else
+                    return 1;
+            }
+        }
+    }
+
+    return -1;
+}
 
 void displayBoard(int positions[ROWS][COLUMNS]) {
     for (int row = 0; row < ROWS; row++) {
@@ -76,45 +138,4 @@ void displayBoard(int positions[ROWS][COLUMNS]) {
         if (row < ROWS-1)
             printf("\n_____\n");
     }
-}
-
-void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
-
-    // loops through every position in grid, checks if move is equal to the index
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
-
-            // j increments symbolize moving horizontally, increasing index by one
-            // i increments by COLUMN symbolizes moving down to next row, resetting j and increasing i by number of columns counted
-            if (move == i*COLUMNS + j + 1) {
-                if (x_or_o % 2 == 0)
-                    positions[i][j] = X;
-                else
-                    positions[i][j] = O;
-            }
-        }
-    }
-
-}
-
-
-int isValidMove(int positions[ROWS][COLUMNS], int move) {
-
-    // nested loop to find move index match
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
-
-            // same algo as playerMove func tp check if move is equal to index in grid
-            if (move == i*COLUMNS + j + 1) {
-
-                // 0 signifies empty position, so if not 0, position used
-                if (positions[i][j] != 0)
-                    return 0;
-                else
-                    return 1;
-            }
-        }
-    }
-
-    return -1;
 }
