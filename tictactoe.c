@@ -23,9 +23,9 @@ int main(void) {
     int turn = 0;
     int pos[ROWS][COLUMNS] = {0};
 
-
-    single_turn(pos, turn);
-    
+    while (pos[0][0] == 0) {
+        single_turn(pos, turn);
+    }
 
     return 0;
 }
@@ -33,38 +33,40 @@ int main(void) {
 void single_turn(int pos[ROWS][COLUMNS], int turn) {
 
     int valid_move = 0;
-    int move;
 
     do {
+        int move;
+
         displayBoard(pos);
-        puts("");
+        
+        if (valid_move == -1)
+            puts("Position already used");
+        else if (valid_move == -2)
+            puts("Position entered is out of range");
+
         puts("Enter a position:");
         scanf("%d", &move);
         system("cls");
 
-        // checks if move in grid is already used
+        // move is not used
         if (isValidMove(pos, move)) {
-            system("cls");
 
             // store move in grid using playerMove func and display grid
             playerMove(pos, move, turn);
             displayBoard(pos);
-
-            // set used_move to 0 so loop terminates
             valid_move = 1;
         }
+
         // makes sure move isn't out of range
         else if (move > ROWS*COLUMNS) {
-            puts("Position entered is too large");
-            valid_move = 0;
+            valid_move = -2;
         }
-        else {
-            puts("Position entered is already used");
 
-            // set used_move to 1 so loop repeats
-            valid_move = 0;
+        // position already used
+        else {
+            valid_move = -1;
         }
-    } while (!valid_move);
+    } while (valid_move != 1);
 }
 
 void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
@@ -113,6 +115,8 @@ int isValidMove(int positions[ROWS][COLUMNS], int move) {
 }
 
 void displayBoard(int positions[ROWS][COLUMNS]) {
+    system("cls");
+
     for (int row = 0; row < ROWS; row++) {
         for (int column = 0; column < COLUMNS; column++) {
 
@@ -138,4 +142,5 @@ void displayBoard(int positions[ROWS][COLUMNS]) {
         if (row < ROWS-1)
             printf("\n_____\n");
     }
+    puts("");
 }
