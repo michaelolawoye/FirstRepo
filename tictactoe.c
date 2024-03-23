@@ -17,7 +17,6 @@ int isValidMove(int positions[ROWS][COLUMNS], int move);
 
 
 int main(void) {
-
     srand(time(NULL));
 
     int turn = 0;
@@ -38,7 +37,7 @@ void single_turn(int pos[ROWS][COLUMNS], int turn) {
         int move;
 
         displayBoard(pos);
-        
+
         if (valid_move == -1)
             puts("Position already used");
         else if (valid_move == -2)
@@ -85,7 +84,6 @@ void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
             }
         }
     }
-
 }
 
 
@@ -110,7 +108,6 @@ int isValidMove(int positions[ROWS][COLUMNS], int move) {
             }
         }
     }
-
     return -1;
 }
 
