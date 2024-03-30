@@ -14,6 +14,9 @@ void single_turn(int pos[ROWS][COLUMNS], int turn);
 void displayBoard(int positions[ROWS][COLUMNS]);
 void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o);
 int isValidMove(int positions[ROWS][COLUMNS], int move);
+int checkWin(int position[ROWS][COLUMNS]);
+int checkpos(int pos[ROWS]);
+
 
 
 int main(void) {
@@ -23,7 +26,7 @@ int main(void) {
     int pos[ROWS][COLUMNS] = {0};
 
     while (pos[0][0] == 0) {
-        single_turn(pos, turn);
+        single_turn(pos, turn++);
     }
 
     return 0;
@@ -140,4 +143,34 @@ void displayBoard(int positions[ROWS][COLUMNS]) {
             printf("\n_____\n");
     }
     puts("");
+}
+
+int checkWin(int positions[ROWS][COLUMNS]) {
+
+    int diagonal[2][3];
+    int columns[ROWS][COLUMNS];
+
+    // creates diagonal and columns to check win (rows not necessary)
+    for (size_t i = 0; i < ROWS; i++) {
+        for (size_t j = 0; j < COLUMNS; j++) {
+            columns[j][i] = positions[i][j];
+            if (i == 1)
+                diagonal[i][j] = positions[j][j];
+            if (i == 2)
+            diagonal[i][j] = positions[j][COLUMNS-j];
+        }
+    }
+}
+
+int checkpos(int pos[ROWS]) {
+
+    int win = 0;
+    for (size_t i = 0; i+2 < ROWS; i++) {
+        if (pos[i] == pos[i+1] == pos[i+2]) {
+            win = 1;
+            break;
+        }
+        else 
+            win = 0;
+    }
 }
