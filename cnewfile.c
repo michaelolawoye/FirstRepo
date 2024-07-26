@@ -1,77 +1,87 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include <math.h>
-#define SIZE 10
+#include <windows.h>
 
+const char g_szClassName[] = "myWindowClass";
 
-int findmod(int arr[], size_t size, int pos, int mod);
-int gcd(int a, int b);
-
-
-int main(void) {
-
-    enum days {january=1, february, march, april, may, june, july, august, september, october, november, december};
-    enum days date;
-    
-    for (int i = 1; i <= 12; i++) {
-        if (date == i) {
-            printf("idk");
+// Step 4: the Window Procedure
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch(msg)
+    {
+        case WM_LBUTTONDOWN:
+        {
+            char newName[MAX_PATH];
+            HINSTANCE hInstance = GetModuleHandle(NULL);
+            
+            GetModuleFileName(hInstance, newName, MAX_PATH);
+            MessageBox(hwnd, newName, "This name is:", MB_OK | MB_ICONINFORMATION);
         }
+        break;
+        case WM_CLOSE:
+            DestroyWindow(hwnd);
+        break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+        break;
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
     }
-
     return 0;
 }
 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine, int nCmdShow)
+{
+    WNDCLASSEX wc;
+    HWND hwnd;
+    MSG Msg;
 
-int findmod(int arr[], size_t size, int pos, int mod) {
+    //Step 1: Registering the Window Class
+    wc.cbSize        = sizeof(WNDCLASSEX);
+    wc.style         = 0;
+    wc.lpfnWndProc   = WndProc;
+    wc.cbClsExtra    = 0;
+    wc.cbWndExtra    = 0;
+    wc.hInstance     = hInstance;
+    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wc.lpszMenuName  = NULL;
+    wc.lpszClassName = g_szClassName;
+    wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 
-    int sum = 0, finalnum;
-
-    for (size_t i = 0; i < size+1; i++) {
-        if (pos == i) {
-            
-        }
-        else {
-            sum += (arr[i] * (i+1));
-        }
+    if(!RegisterClassEx(&wc))
+    {
+        MessageBox(NULL, "Window Registration Failed!", "Error!",
+            MB_ICONEXCLAMATION | MB_OK);
+        return 0;
     }
-    sum = sum % mod;
-    finalnum = mod - sum;
 
-    return finalnum;
+    // Step 2: Creating the Window
+    hwnd = CreateWindowEx(
+        WS_EX_CLIENTEDGE,
+        g_szClassName,
+        "The title of my window",
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 500, 360,
+        NULL, NULL, hInstance, NULL);
 
+    if(hwnd == NULL)
+    {
+        MessageBox(NULL, "Window Creation Failed!", "Error!",
+            MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    ShowWindow(hwnd, nCmdShow);
+    UpdateWindow(hwnd);
+
+    // Step 3: The Message Loop
+    while(GetMessage(&Msg, NULL, 0, 0) > 0)
+    {
+        TranslateMessage(&Msg);
+        DispatchMessage(&Msg);
+    }
+    return Msg.wParam;
 }
-
-
-int gcd(int a, int b) {
-
-    int r_val = 0;
-
-    while ((a != 0) && (b != 0)) {
-        if (a > b) {
-            a = a - (a/b) * b;
-        }
-        else if (b > a) {
-            b = b - (b/a) * a;
-        }
-        else {
-            r_val = a;
-            return r_val;
-        }
-    }
-
-    if (a == 0) {
-        r_val = b;
-    }
-    else if (b == 0) {
-        r_val = a;
-    }
-
-    return r_val;
-}
-
-
-// red = 3, green = 5, blue = 8
-// N = 16, n = 3
