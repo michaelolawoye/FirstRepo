@@ -1,6 +1,11 @@
+#ifndef WINDOWHEADER_H
+#define WINDOWHEADER_H
+
 #define IDR_MYMENU 101
 #define IDI_MYICON 102
 
 #define ID_FILE_EXIT 1001
 #define ID_STUFF_GO 1002
 
+
+#endif

@@ -13,8 +13,8 @@
 
 void single_turn(int pos[ROWS][COLUMNS]);
 void displayBoard(int positions[ROWS][COLUMNS]);
-void playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o);
-void compMove(int positions[ROWS][COLUMNS], int x_or_o);
+int playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o);
+int compMove(int positions[ROWS][COLUMNS], int x_or_o);
 int isValidMove(int positions[ROWS][COLUMNS], int move);
 int checkWin(int position[ROWS][COLUMNS]);
 int checkpos(int pos[ROWS]);
@@ -23,17 +23,22 @@ int checkpos(int pos[ROWS]);
 int main(void) {
     srand(time(NULL));
 
-    int turn;
+    int xoro;
     int pos[ROWS][COLUMNS] = {0};
     // pos[0][2] = 1; 
     puts("Would you like to be X or O (X=1, O=2)?");
-    scanf("%d", &turn);
+    scanf("%d", &xoro);
     do {
-        displayBoard(pos);
+        single_turn(pos);
     } while (0);
 
     return 0;
 }
+
+void single_turn(int pos[ROWS][COLUMNS]) {
+
+}
+
 
 void displayBoard(int positions[ROWS][COLUMNS]) {
 
@@ -56,6 +61,32 @@ void displayBoard(int positions[ROWS][COLUMNS]) {
     }
 }
 
+int playerMove(int positions[ROWS][COLUMNS], int move, int x_or_o) {
+
+    int x = ((move-1) % COLUMNS);
+    int y = ceil((float)move/ROWS);
+    if (isValidMove(positions, move)) {
+        if (x_or_o == X) { positions[x][y] == X;}
+        else { positions[x][y] == O;}
+        return 1;
+    }
+
+}
+
+int compMove(int positions[ROWS][COLUMNS], int x_or_o) {
+
+    int move = rand() % (ROWS*COLUMNS);
+    int x = ((move-1) % COLUMNS);
+    int y = ceil((float)move/ROWS);
+    if (isValidMove(positions, move)) {
+        if (x_or_o == X) { positions[x][y] == O;}
+        else {positions[x][y] == X;}
+        return 1;
+    }
+    
+}
+
+
 int isValidMove(int positions[ROWS][COLUMNS], int move) {
 
     move--;
@@ -63,8 +94,9 @@ int isValidMove(int positions[ROWS][COLUMNS], int move) {
     int row = ceil((float)move/ROWS);
 
     if (positions[row][col] != 0) {
-        puts("Enter a valid move");
         return 0;
     }
+        return 1;
+    
     
 }

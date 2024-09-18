@@ -1,24 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
+#include <windows.h>
 
-#define ROWS 5
-#define COLS 5
 
 int main(void) {
-    srand(time(NULL));
+
+    int a = 0x00008BCD;
+    printf("LOWORD: %d\n", ((WORD)(a)));
+    printf("HIWORD: %d", (WORD)(((DWORD)(a >> 15)) & 0xFFFF));
+    // 6 -> 110
+    // 3 -> 011
+    // 00008BCD -> 0000 0000 0000 0000 0100 0111 1000 1001
     
-    int words_array[][5] = {0};
-    // main print loop
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            
-            int r_int = rand() % 26 + 'a';
-            printf("%c ", r_int);
-        }
-        puts("");
-    }
-    int hexa = 0xFFA123;
-    printf("%d", hexa);
     return 0;
 }
