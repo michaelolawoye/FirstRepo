@@ -1,3 +1,5 @@
 *.exe
+.json
 testingstuff.py
-tictactoe.exe
+testingthings.cpp
+testingthings.c
